@@ -22,7 +22,6 @@ export const Navbar = ({ onOpenQuoteModal }) => {
 
   const navLinks = [
     { name: 'Home', href: '#hero' },
-    { name: 'About', href: '#about' },
     { name: 'Services', href: '#services' },
     { name: 'Projects', href: '#projects' },
     { name: 'Process', href: '#process' },

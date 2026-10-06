@@ -69,7 +69,6 @@ export const Footer = ({ onOpenQuoteModal }) => {
             </h4>
             <ul className="space-y-3 text-sm text-[#D9D9D4]">
               <li><a href="#hero" className="hover:text-[#F7F7F5] transition-colors">Home</a></li>
-              <li><a href="#about" className="hover:text-[#F7F7F5] transition-colors">About Us</a></li>
               <li><a href="#services" className="hover:text-[#F7F7F5] transition-colors">Services & Work</a></li>
               <li><a href="#projects" className="hover:text-[#F7F7F5] transition-colors">Selected Projects</a></li>
               <li><a href="#process" className="hover:text-[#F7F7F5] transition-colors">How We Work</a></li>

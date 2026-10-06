@@ -8,40 +8,16 @@ export const ContactSection = () => {
   return (
     <section id="contact" className="py-24 md:py-32 bg-[#EEEEEB] border-b border-[#D9D9D4]">
       <Container>
-        {/* Main CTA Header Banner */}
-        <div className="bg-[#111111] text-[#F7F7F5] rounded-[6px] p-8 sm:p-12 md:p-16 mb-16 shadow-lg relative overflow-hidden">
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-8">
-              <span className="text-xs uppercase tracking-architectural text-[#D85B3F] font-mono mb-3 block font-bold">
-                START A CONVERSATION &bull; NOIDA (UP)
-              </span>
-              <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-[#F7F7F5] leading-[1.12]">
-                Building Your Dreams,<br />
-                <span className="text-[#D85B3F] font-display">Brick by Brick!</span>
-              </h2>
-            </div>
-
-            <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3 justify-end">
-              <Button href={`tel:${COMPANY_INFO.phone}`} variant="accent" size="lg">
-                Call +91 95696 64741
-              </Button>
-              <Button href="https://wa.me/919569664741" target="_blank" variant="secondary" size="lg" className="border-[#F7F7F5] text-[#F7F7F5] hover:bg-[#F7F7F5] hover:text-[#111111]">
-                WhatsApp Chat &rarr;
-              </Button>
-            </div>
-          </div>
-        </div>
-
         {/* Form and Contact Detail Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           
           {/* Left Column: Direct Contact Info */}
           <div className="lg:col-span-5 flex flex-col justify-between">
             <div>
-              <span className="text-xs uppercase tracking-architectural text-[#6B6B67] font-mono mb-2 block">
-                DIRECT OFFICE INQUIRIES
+              <span className="text-xs uppercase tracking-architectural text-[#D85B3F] font-mono mb-2 block font-bold">
+                DIRECT OFFICE INQUIRIES &bull; NOIDA (UP)
               </span>
-              <h3 className="text-2xl sm:text-3xl font-bold text-[#111111] mb-6">
+              <h3 className="text-2xl sm:text-4xl font-extrabold text-[#111111] mb-6 tracking-tight">
                 Connect with AK Global Solutions.
               </h3>
               <p className="text-sm text-[#6B6B67] leading-relaxed mb-8">
@@ -55,7 +31,7 @@ export const ContactSection = () => {
                   </div>
                   <div>
                     <span className="text-xs text-[#6B6B67] font-mono block uppercase">TELEPHONE</span>
-                    <a href={`tel:${COMPANY_INFO.phone}`} className="hover:text-[#D85B3F] transition-colors font-bold">{COMPANY_INFO.displayPhone}</a>
+                    <a href={`tel:${COMPANY_INFO.phone}`} className="hover:text-[#D85B3F] transition-colors font-bold text-base">{COMPANY_INFO.displayPhone}</a>
                   </div>
                 </div>
 
@@ -90,7 +66,7 @@ export const ContactSection = () => {
             </div>
           </div>
 
-          {/* Right Column: Disabled Enquiry Form Notice Card */}
+          {/* Right Column: Direct Call / WhatsApp Contact Card */}
           <div className="lg:col-span-7 bg-[#F7F7F5] border border-[#D9D9D4] rounded-[6px] p-8 sm:p-12 flex flex-col items-center justify-center text-center">
             <div className="p-4 bg-[#EEEEEB] border border-[#D9D9D4] rounded-full text-[#D85B3F] mb-4">
               <AlertCircle className="w-8 h-8" />

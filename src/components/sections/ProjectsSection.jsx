@@ -3,6 +3,7 @@ import { Container } from '../layout/Container';
 import { SectionHeader } from '../ui/SectionHeader';
 import { ProjectCard } from '../ui/ProjectCard';
 import { ProjectSkeleton } from '../ui/ProjectSkeleton';
+import { ScrollZoomWrapper } from '../ui/ScrollZoomWrapper';
 import { projectService } from '../../services/projectService';
 
 export const ProjectsSection = () => {
@@ -49,7 +50,7 @@ export const ProjectsSection = () => {
           ))}
         </div>
 
-        {/* Asymmetric Editorial Grid with Skeleton Loading */}
+        {/* Asymmetric Editorial Grid with Automatic Mobile Scroll Zoom */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           {loading ? (
             <ProjectSkeleton count={4} />
@@ -75,7 +76,9 @@ export const ProjectsSection = () => {
 
               return (
                 <div key={project.id} className={colSpan}>
-                  <ProjectCard project={project} aspect={aspect} />
+                  <ScrollZoomWrapper>
+                    <ProjectCard project={project} aspect={aspect} />
+                  </ScrollZoomWrapper>
                 </div>
               );
             })

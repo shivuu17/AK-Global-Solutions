@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-primary: #F7F7F5;
+    --bg-secondary: #EEEEEB;
+    --text-primary: #111111;
+    --text-muted: #6B6B67;
+    --accent: #D85B3F;
+    --border-color: #D9D9D4;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    overflow-x: hidden;
+    background-color: #F7F7F5;
+    color: #111111;
+  }
+
+  ::selection {
+    background-color: #111111;
+    color: #F7F7F5;
+  }
+}
+
+@theme {
+  --color-brand-dark: #111111;
+  --color-brand-bg: #F7F7F5;
+  --color-brand-bg-alt: #EEEEEB;
+  --color-brand-accent: #D85B3F;
+  --color-brand-muted: #6B6B67;
+  --color-brand-border: #D9D9D4;
+  
+  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-display: "Space Grotesk", "Plus Jakarta Sans", sans-serif;
+}
+
+/* Architectural grid pattern background */
+.architectural-grid-bg {
+  background-image: 
+    linear-gradient(to right, rgba(217, 217, 212, 0.4) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(217, 217, 212, 0.4) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+.architectural-grid-fine {
+  background-image: 
+    linear-gradient(to right, rgba(217, 217, 212, 0.25) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(217, 217, 212, 0.25) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Custom crisp architectural scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #F7F7F5;
+}
+::-webkit-scrollbar-thumb {
+  background: #D9D9D4;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #6B6B67;
+}
+
+/* Custom transition utils */
+.transition-architectural {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}

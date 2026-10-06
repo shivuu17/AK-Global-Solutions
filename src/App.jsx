@@ -4,11 +4,13 @@ import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { DynamicModal } from './components/ui/DynamicModal';
 import { WhatsAppFloatingButton } from './components/ui/WhatsAppFloatingButton';
+import { LoadingScreen } from './components/ui/LoadingScreen';
 import { HomePage } from './pages/HomePage';
 import { ProjectDetailPage } from './pages/ProjectDetailPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 export function App() {
+  const [isLoading, setIsLoading] = useState(true);
   const [quoteModalOpen, setQuoteModalOpen] = useState(false);
 
   const handleOpenQuote = () => setQuoteModalOpen(true);
@@ -17,6 +19,11 @@ export function App() {
   return (
     <Router>
       <div className="min-h-screen bg-[#F7F7F5] text-[#111111] font-sans antialiased selection:bg-[#111111] selection:text-[#F7F7F5]">
+        {/* Full-Page Initial Architectural Loading Screen */}
+        {isLoading && (
+          <LoadingScreen onFinish={() => setIsLoading(false)} />
+        )}
+
         {/* Sticky Architectural Navbar */}
         <Navbar onOpenQuoteModal={handleOpenQuote} />
 

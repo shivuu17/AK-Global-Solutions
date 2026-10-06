@@ -4,6 +4,7 @@ import { Container } from '../components/layout/Container';
 import { Button } from '../components/ui/Button';
 import { BeforeAfterSlider } from '../components/ui/BeforeAfterSlider';
 import { ProjectCard } from '../components/ui/ProjectCard';
+import { ProjectDetailSkeleton } from '../components/ui/ProjectDetailSkeleton';
 import { projectService } from '../services/projectService';
 import { ArrowLeft, MapPin, Calendar, Layers, ShieldCheck } from 'lucide-react';
 
@@ -32,11 +33,7 @@ export const ProjectDetailPage = ({ onOpenQuoteModal }) => {
   }, [id]);
 
   if (loading) {
-    return (
-      <div className="min-h-screen pt-40 pb-20 flex items-center justify-center font-mono text-xs text-[#6B6B67]">
-        LOADING ARCHITECTURAL PROJECT SPECIFICATIONS...
-      </div>
-    );
+    return <ProjectDetailSkeleton />;
   }
 
   if (!project) {

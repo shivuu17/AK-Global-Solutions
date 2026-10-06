@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container } from '../layout/Container';
 import { SectionHeader } from '../ui/SectionHeader';
 import { ProjectCard } from '../ui/ProjectCard';
+import { ProjectSkeleton } from '../ui/ProjectSkeleton';
 import { projectService } from '../../services/projectService';
 
 export const ProjectsSection = () => {
@@ -48,19 +49,16 @@ export const ProjectsSection = () => {
           ))}
         </div>
 
-        {/* Asymmetric Editorial Grid */}
-        {loading ? (
-          <div className="py-20 text-center text-xs font-mono text-[#6B6B67]">
-            LOADING ARCHITECTURAL PORTFOLIO...
-          </div>
-        ) : projects.length === 0 ? (
-          <div className="py-20 text-center text-xs font-mono text-[#6B6B67]">
-            NO PROJECTS FOUND IN THIS CATEGORY.
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-            {projects.map((project, index) => {
-              // Asymmetric layout logic: alternate 7-col and 5-col spanning
+        {/* Asymmetric Editorial Grid with Skeleton Loading */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+          {loading ? (
+            <ProjectSkeleton count={4} />
+          ) : projects.length === 0 ? (
+            <div className="md:col-span-12 py-20 text-center text-xs font-mono text-[#6B6B67]">
+              NO PROJECTS FOUND IN THIS CATEGORY.
+            </div>
+          ) : (
+            projects.map((project, index) => {
               const isEvenRow = Math.floor(index / 2) % 2 === 0;
               const isFirstInPair = index % 2 === 0;
 
@@ -80,9 +78,9 @@ export const ProjectsSection = () => {
                   <ProjectCard project={project} aspect={aspect} />
                 </div>
               );
-            })}
-          </div>
-        )}
+            })
+          )}
+        </div>
       </Container>
     </section>
   );

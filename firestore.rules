@@ -11,10 +11,16 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    // Check if the user has an admin claim OR is in the admin collection/allowlist
+    // Check if the user has an admin claim, verified email allowlist, OR is in the admin collection
     function isAdmin() {
       return isAuthenticated() && (
         request.auth.token.admin == true ||
+        (request.auth.token.email != null && 
+         request.auth.token.email.lower() in [
+           'akglobalsolutions@gmail.com',
+           'admin@akglobalsolutions.in',
+           'artiglobalsolutions@gmail.com'
+         ]) ||
         exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
         (request.auth.token.email != null && 
          exists(/databases/$(database)/documents/admin_emails/$(request.auth.token.email)))

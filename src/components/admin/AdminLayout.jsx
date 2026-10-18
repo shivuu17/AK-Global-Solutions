@@ -65,10 +65,10 @@ export const AdminLayout = ({ children, title = 'Dashboard' }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F0F0ED] text-[#111111] flex flex-col md:flex-row font-sans">
+    <div className="h-screen w-full bg-[#F0F0ED] text-[#111111] flex flex-col md:flex-row font-sans overflow-hidden">
       
       {/* Mobile Top Bar */}
-      <div className="md:hidden bg-[#111111] text-[#F7F7F5] px-4 py-3 flex items-center justify-between border-b border-[#262626] sticky top-0 z-40">
+      <div className="md:hidden bg-[#111111] text-[#F7F7F5] px-4 py-3 flex items-center justify-between border-b border-[#262626] shrink-0 z-40">
         <div className="flex items-center gap-2">
           <img src={COMPANY_INFO.logoUrl} alt="Logo" className="h-7 w-auto" />
           <span className="font-extrabold text-sm tracking-tight">AK GLOBAL ADMIN</span>
@@ -81,9 +81,9 @@ export const AdminLayout = ({ children, title = 'Dashboard' }) => {
         </button>
       </div>
 
-      {/* Sidebar Navigation */}
+      {/* Sidebar Navigation - Fixed & Stationary */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#111111] text-[#D9D9D4] flex flex-col justify-between transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:h-screen shrink-0 ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#111111] text-[#D9D9D4] flex flex-col justify-between transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:h-screen shrink-0 overflow-y-auto select-none ${
           mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -178,10 +178,10 @@ export const AdminLayout = ({ children, title = 'Dashboard' }) => {
         </div>
       </aside>
 
-      {/* Main Content Workspace */}
-      <main className="flex-1 flex flex-col min-h-screen overflow-y-auto">
-        {/* Workspace Header */}
-        <header className="bg-[#F7F7F5] border-b border-[#D9D9D4] px-6 py-4 flex items-center justify-between sticky top-0 z-30 shadow-xs">
+      {/* Main Content Workspace - Independent Scroll Container */}
+      <main className="flex-1 flex flex-col h-full min-h-0 min-w-0 overflow-y-auto">
+        {/* Workspace Header - Fixed at the top of the working area */}
+        <header className="bg-[#F7F7F5] border-b border-[#D9D9D4] px-6 py-4 flex items-center justify-between sticky top-0 z-30 shadow-xs shrink-0">
           <div>
             <span className="text-[10px] uppercase tracking-architectural font-mono text-[#D85B3F] block font-bold">
               ADMIN CONTROL PANEL

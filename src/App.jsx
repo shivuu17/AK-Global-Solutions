@@ -45,9 +45,10 @@ function AppContent() {
   const handleCloseQuote = () => setQuoteModalOpen(false);
 
   const isAdminRoute = location.pathname.startsWith('/admin');
+  const isAdminWorkspace = isAdminRoute && location.pathname !== '/admin/login';
 
   return (
-    <div className="min-h-screen bg-[#F7F7F5] text-[#111111] font-sans antialiased selection:bg-[#111111] selection:text-[#F7F7F5]">
+    <div className={`${isAdminWorkspace ? 'h-screen overflow-hidden' : 'min-h-screen'} bg-[#F7F7F5] text-[#111111] font-sans antialiased selection:bg-[#111111] selection:text-[#F7F7F5]`}>
       {/* Full-Page Initial Architectural Loading Screen (only on public home entry) */}
       {!isAdminRoute && isLoading && (
         <LoadingScreen onFinish={() => setIsLoading(false)} />

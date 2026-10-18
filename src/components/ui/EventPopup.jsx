@@ -2,54 +2,89 @@ import React, { useState, useEffect } from 'react';
 import { popupService } from '../../services/popupService';
 import { X, Calendar, Sparkles, ArrowRight } from 'lucide-react';
 
-export const EventPopup = () => {
-  const [activePopup, setActivePopup] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const [dontShowAgain, setDontShowAgain] = useState(true);
+const DEFAULT_STUDIO_POPUP = {
+  id: 'default_studio_consultation_popup',
+  title: 'Complimentary On-Site Architecture & Interior Consultation',
+  subtitle: 'LIMITED TIME STUDIO OFFER',
+  message: 'Planning a residential interior renovation, luxury modular kitchen, or turnkey civil construction in Noida? Schedule a direct site review with our lead designer today.',
+  ctaLabel: 'Claim Complimentary Consultation',
+  ctaUrl: '#contact',
+  active: true,
+  priority: 1,
+  image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80'
+};
 
+export const EventPopup = ({ isPageReady = true, onOpenQuoteModal }) => {
+  const [activePopup, setActivePopup] = useState(DEFAULT_STUDIO_POPUP);
+  const [isOpen, setIsOpen] = useState(false);
+  const [dontShowAgain, setDontShowAgain] = useState(false);
+
+  // Pre-load active popup data from Firestore if available
   useEffect(() => {
-    let timer;
-    async function checkForEventPopups() {
+    let isMounted = true;
+    async function loadPopupData() {
       try {
         const popups = await popupService.getActivePopups();
-        if (!popups || popups.length === 0) return;
+        if (!isMounted || !popups || popups.length === 0) return;
 
-        // Find highest priority popup that hasn't been dismissed
-        for (const popup of popups) {
-          const key = popup.dismissKey || popup.id;
-          if (!popupService.isDismissed(key)) {
-            setActivePopup(popup);
-            // Display gracefully after initial page engagement (1.8s)
-            timer = setTimeout(() => {
-              setIsOpen(true);
-            }, 1800);
-            break;
-          }
+        // Pick highest priority active popup from Firestore
+        const customPopup = popups.find(p => p.id !== DEFAULT_STUDIO_POPUP.id && !popupService.isDismissed(p.dismissKey || p.id));
+        if (customPopup) {
+          setActivePopup(customPopup);
         }
       } catch (err) {
         console.warn('Failed to check active event popups:', err);
       }
     }
 
-    checkForEventPopups();
+    loadPopupData();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  // Reveal popup with smooth ease-in just after site finishes loading
+  useEffect(() => {
+    // If dismissed for this session, don't show
+    if (activePopup) {
+      const key = activePopup.dismissKey || activePopup.id;
+      if (popupService.isDismissed(key)) {
+        return;
+      }
+    }
+
+    let timer;
+    if (isPageReady) {
+      // 300ms smooth transition right after initial loading screen finishes
+      timer = setTimeout(() => {
+        setIsOpen(true);
+      }, 300);
+    } else {
+      // Safety fallback in case loading screen is skipped or takes longer
+      timer = setTimeout(() => {
+        setIsOpen(true);
+      }, 2000);
+    }
 
     return () => {
       if (timer) clearTimeout(timer);
     };
-  }, []);
+  }, [isPageReady, activePopup]);
 
   const handleClose = () => {
     if (activePopup) {
       const key = activePopup.dismissKey || activePopup.id;
-      if (dontShowAgain) {
-        popupService.dismiss(key);
-      }
+      popupService.dismiss(key, dontShowAgain);
     }
     setIsOpen(false);
   };
 
   const handleCtaClick = () => {
     handleClose();
+    if (onOpenQuoteModal && (!activePopup?.ctaUrl || activePopup.ctaUrl === '#contact' || activePopup.ctaUrl === '#quote')) {
+      onOpenQuoteModal();
+      return;
+    }
     if (activePopup?.ctaUrl) {
       if (activePopup.ctaUrl.startsWith('#')) {
         const target = document.querySelector(activePopup.ctaUrl);
@@ -65,9 +100,9 @@ export const EventPopup = () => {
   if (!isOpen || !activePopup) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#111111]/75 backdrop-blur-xs animate-fade-in">
+    <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-[#111111]/80 backdrop-blur-xs animate-popup-backdrop">
       <div 
-        className="relative w-full max-w-lg bg-[#F7F7F5] border border-[#D9D9D4] rounded-[6px] shadow-2xl p-6 sm:p-8 text-center overflow-hidden"
+        className="relative w-full max-w-lg bg-[#F7F7F5] border border-[#D9D9D4] rounded-[6px] shadow-2xl p-6 sm:p-8 text-center overflow-hidden animate-popup-card"
         role="dialog"
         aria-modal="true"
       >

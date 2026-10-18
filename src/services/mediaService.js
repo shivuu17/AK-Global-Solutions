@@ -17,8 +17,8 @@ export const mediaService = {
    * Check if Cloudinary is configured
    */
   isCloudinaryConfigured() {
-    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'akglobalsolutions';
-    const preset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'ak_global_admin_preset';
+    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'i6z7x1bl';
+    const preset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'ml_default';
     return Boolean(cloudName && cloudName !== 'your_cloud_name' && preset);
   },
 
@@ -43,8 +43,8 @@ export const mediaService = {
       throw new Error('Image size exceeds 10MB limit. Please compress the image before uploading.');
     }
 
-    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'akglobalsolutions';
-    const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'ak_global_admin_preset';
+    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'i6z7x1bl';
+    const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'ml_default';
 
     if (!cloudName || cloudName === 'your_cloud_name') {
       throw new Error(

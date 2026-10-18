@@ -159,7 +159,7 @@ function AppContent() {
 
       {/* Live Event Pop-up announcement modal */}
       {!isAdminRoute && (
-        <EventPopup />
+        <EventPopup isPageReady={!isLoading} onOpenQuoteModal={handleOpenQuote} />
       )}
 
       {/* Global Consultation Modal */}

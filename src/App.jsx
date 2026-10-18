@@ -1,5 +1,5 @@
 import React, { useState, lazy, Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './components/admin/ProtectedRoute';
 
@@ -133,6 +133,13 @@ function AppContent() {
               </ProtectedRoute>
             }
           />
+
+          {/* Admin Route Aliases & Fallbacks to prevent 404s */}
+          <Route path="/admin/dashboard" element={<Navigate to="/admin" replace />} />
+          <Route path="/admin-page" element={<Navigate to="/admin" replace />} />
+          <Route path="/adminpage" element={<Navigate to="/admin" replace />} />
+          <Route path="/login" element={<Navigate to="/admin/login" replace />} />
+          <Route path="/admin/*" element={<Navigate to="/admin" replace />} />
 
           {/* Fallback 404 */}
           <Route path="*" element={<NotFoundPage />} />

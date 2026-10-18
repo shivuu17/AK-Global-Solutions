@@ -1,7 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Container } from './Container';
 import { COMPANY_INFO } from '../../data/company';
-import { Phone, Mail, MapPin } from 'lucide-react';
+import { Phone, Mail, MapPin, Lock } from 'lucide-react';
 
 export const Footer = ({ onOpenQuoteModal }) => {
   return (
@@ -94,8 +95,16 @@ export const Footer = ({ onOpenQuoteModal }) => {
 
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-[#6B6B67] font-mono gap-4">
-          <div>
-            &copy; 2026 AK Global Solutions. All rights reserved. Sadarpur, Sec-45, Noida (UP).
+          <div className="flex items-center gap-4 flex-wrap">
+            <span>&copy; 2026 AK Global Solutions. All rights reserved. Sadarpur, Sec-45, Noida (UP).</span>
+            <Link 
+              to="/admin" 
+              className="inline-flex items-center gap-1.5 text-[#888884] hover:text-[#D85B3F] transition-colors"
+              title="Administrator Portal"
+            >
+              <Lock className="w-3 h-3 text-[#D85B3F]" />
+              <span>Admin Portal</span>
+            </Link>
           </div>
           <div className="flex items-center gap-6">
             {COMPANY_INFO.socials.map((social) => (

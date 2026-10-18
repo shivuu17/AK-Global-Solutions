@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link, Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { Lock, Mail, AlertCircle, ArrowLeft, CheckCircle2, ShieldCheck } from 'lucide-react';
 
@@ -21,7 +21,7 @@ export const AdminLoginPage = () => {
 
   // If already authenticated, redirect immediately
   if (isAuthenticated) {
-    navigate(from, { replace: true });
+    return <Navigate to={from} replace />;
   }
 
   const handleSubmit = async (e) => {
@@ -230,3 +230,5 @@ export const AdminLoginPage = () => {
     </div>
   );
 };
+
+export default AdminLoginPage;

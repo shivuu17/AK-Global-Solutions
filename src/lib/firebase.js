@@ -8,13 +8,13 @@ import { getAnalytics, isSupported } from 'firebase/analytics';
  * Sourced securely from Vite environment variables (VITE_FIREBASE_*)
  */
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
-  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || 'AIzaSyBXmE-gQ_DuKRWop9TojyY7AXEgOAafkhY',
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || 'ak-globalsolutions.firebaseapp.com',
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || 'ak-globalsolutions',
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || 'ak-globalsolutions.firebasestorage.app',
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '912066017254',
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || '1:912066017254:web:2793875a68f9a032068827',
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || 'G-RCSRYNQWTK',
 };
 
 /**

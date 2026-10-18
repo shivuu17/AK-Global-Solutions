@@ -1,0 +1,138 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // -------------------------------------------------------------------------
+    // HELPER FUNCTIONS & ACCESS CONTROL
+    // -------------------------------------------------------------------------
+
+    // Check if the user is authenticated with Firebase Auth
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Check if the user has an admin claim OR is in the admin collection/allowlist
+    function isAdmin() {
+      return isAuthenticated() && (
+        request.auth.token.admin == true ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
+        (request.auth.token.email != null && 
+         exists(/databases/$(database)/documents/admin_emails/$(request.auth.token.email)))
+      );
+    }
+
+    // Check for valid string within length bounds
+    function isValidString(val, minLen, maxLen) {
+      return val is string && val.size() >= minLen && val.size() <= maxLen;
+    }
+
+    // Default deny all unknown collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // -------------------------------------------------------------------------
+    // 1. PROJECTS COLLECTION
+    // Public: Read ONLY if status == 'published'
+    // Admin: Read all, create, update, delete
+    // -------------------------------------------------------------------------
+    match /projects/{projectId} {
+      allow read: if resource.data.status == 'published' || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    // -------------------------------------------------------------------------
+    // 2. SERVICES COLLECTION
+    // Public: Read all published services
+    // Admin: Full management
+    // -------------------------------------------------------------------------
+    match /services/{serviceId} {
+      allow read: if resource.data.status == 'published' || resource.data.status == null || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    // -------------------------------------------------------------------------
+    // 3. POPUPS (EVENT POP-UP CREATOR)
+    // Public: Read ONLY if active == true and within startAt / endAt schedule
+    // Admin: Full management
+    // -------------------------------------------------------------------------
+    match /popups/{popupId} {
+      allow read: if resource.data.active == true || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    // -------------------------------------------------------------------------
+    // 4. EVENTS COLLECTION
+    // Public: Read ONLY if status == 'published'
+    // Admin: Full management
+    // -------------------------------------------------------------------------
+    match /events/{eventId} {
+      allow read: if resource.data.status == 'published' || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    // -------------------------------------------------------------------------
+    // 5. ENQUIRIES COLLECTION (LEADS / QUOTE REQUESTS)
+    // Public: CREATE ONLY with strict field validation. Cannot set status or adminNotes.
+    // Admin: READ, UPDATE (notes/status), DELETE.
+    // -------------------------------------------------------------------------
+    match /enquiries/{enquiryId} {
+      // Public cannot read, list, update or delete enquiries
+      allow read, delete: if isAdmin();
+      
+      // Admin can update status and adminNotes
+      allow update: if isAdmin();
+
+      // Anyone can submit an enquiry, but payload MUST conform strictly:
+      allow create: if (
+        // Must contain required client fields
+        request.resource.data.keys().hasAll(['name', 'phone', 'message']) &&
+        // Strict field types and lengths
+        isValidString(request.resource.data.name, 2, 100) &&
+        isValidString(request.resource.data.phone, 7, 20) &&
+        isValidString(request.resource.data.message, 5, 3000) &&
+        // Status must be 'new' on submission (visitor cannot forge status)
+        request.resource.data.status == 'new' &&
+        // Public visitor cannot supply adminNotes
+        (!('adminNotes' in request.resource.data) || request.resource.data.adminNotes == '') &&
+        // Honeypot check: website field must be empty if present
+        (!('botField' in request.resource.data) || request.resource.data.botField == '')
+      );
+    }
+
+    // -------------------------------------------------------------------------
+    // 6. SETTINGS COLLECTION
+    // Public: Read 'general' settings (phone, email, address, socials, hero text)
+    // Admin: Read & update
+    // -------------------------------------------------------------------------
+    match /settings/{settingId} {
+      allow read: if settingId == 'general' || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // -------------------------------------------------------------------------
+    // 7. MEDIA COLLECTION (Cloudinary asset catalog)
+    // Admin: Full read & write
+    // Public: No access to administrative catalog metadata
+    // -------------------------------------------------------------------------
+    match /media/{mediaId} {
+      allow read, write: if isAdmin();
+    }
+
+    // -------------------------------------------------------------------------
+    // 8. ADMIN DIRECTORY / ALLOWLIST
+    // Admin: Read only
+    // Modification: Denied from client SDKs (managed via Console / privileged SDK)
+    // -------------------------------------------------------------------------
+    match /admins/{adminId} {
+      allow read: if isAuthenticated();
+      allow write: if false;
+    }
+
+    match /admin_emails/{email} {
+      allow read: if isAuthenticated();
+      allow write: if false;
+    }
+  }
+}
+

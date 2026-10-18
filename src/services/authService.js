@@ -13,7 +13,7 @@ import { auth, isFirebaseConfigured } from '../lib/firebase';
 const getAdminEmails = () => {
   const envEmails = import.meta.env.VITE_ADMIN_EMAILS;
   if (!envEmails) {
-    return ['akglobalsolutions@gmail.com', 'admin@akglobalsolutions.in'];
+    return ['akglobalsolutions@gmail.com', 'admin@akglobalsolutions.in', 'artiglobalsolutions@gmail.com'];
   }
   return envEmails.split(',').map((e) => e.trim().toLowerCase());
 };
